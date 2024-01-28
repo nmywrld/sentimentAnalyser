@@ -12,7 +12,7 @@ country_mapping = {
 }
 
 # Read sentiment data from CSV files
-sentiment_directory = 'sentiment/results'
+sentiment_directory = './results'
 sentiments_data = []
 
 for country_code in country_mapping.keys():

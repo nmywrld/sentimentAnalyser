@@ -6,7 +6,7 @@ from datetime import timedelta
 
 # Read CSV file
 # Change for AU, IE, IN, GB, US
-filtered_path = 'filteredDatasets/australia.csv'
+filtered_path = "../filteredDatasets/AU.csv"
 data = pd.read_csv(filtered_path)
 headlines_data = []
 headlines_data.append(data)
