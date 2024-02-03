@@ -31,6 +31,34 @@ def convert_json_to_csv():
 
     # return headlines_df
 
+# /test endpoint that reads ./testing/testData.csv and does the same as /analyse
+@app.route('/test')
+def test():
+    # load the data
+    data = pd.read_csv('./testing/testData.csv')
+    
+    # convert cols 
+    data['publish_date'] = pd.to_datetime(data['publish_date'])
+    data['headline_text'] = data['headline_text'].astype(str)
+    data['description'] = data['description'].astype(str)
+
+    # make a copy of the data
+    headlines_df = data.copy()
+    headlines_df['headline_sentiment'] = 0
+    headlines_df['description_sentiment'] = 0
+    headlines_df['emotion'] = None
+
+    print(headlines_df.dtypes)
+
+    # call get_sentiment_and_emotion
+    results = model_loader.get_sentiment_and_emotion(len(headlines_df), headlines_df)
+    results.head()
+
+    keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline_text'].tolist()) + " ".join(headlines_df['description'].tolist()))
+    print(keyword_results)
+
+    return headlines_df.to_json(orient='records')
+
 
 
 @app.route('/get_sentiment_and_emotion')
