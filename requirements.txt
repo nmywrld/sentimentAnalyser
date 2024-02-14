@@ -7,3 +7,5 @@ emoji=0.6.0
 wordcloud
 vaderSentiment
 Pillow
+Flask==2.2.2
+pymongo
