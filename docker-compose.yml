@@ -15,7 +15,7 @@ services:
     build: ./sentiment_service
     command: python -u sentimentApp.py
     ports:
-      - "5100:5002"
+      - "5002:5002"
     networks:
       - sentiment_network
 
