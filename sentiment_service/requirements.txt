@@ -3,7 +3,7 @@ tqdm
 transformers
 numpy
 pandas
-emoji=0.6.0
+emoji==0.6.0
 wordcloud
 vaderSentiment
 Pillow
