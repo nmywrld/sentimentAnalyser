@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import sys
 import os
 import requests
+# import datetime as dt
 
 app = Flask(__name__)
 db = None
@@ -32,6 +33,10 @@ def get_db():
     return db
 
 try:
+
+    db_url = os.environ['DB_URL']
+    print("URL retrieved from env variable: " + db_url)
+
     db = get_db()
     print("Connected to database")
 
@@ -53,13 +58,35 @@ except:
 def ping_server():
     return "Welcome to sentiments microservice."
 
-@app.route('/get_sentiments')
+
+
+# @app.route('/query')
+    # scan DB 
+    # if it exists, check time added
+        # if valid, return stored results
+
+    # else, query sentiment service
+        # wait for reply from /search 
+        # return calculated results 
+
+
+# @app.route('/search') 
+    # send request to sentiment service with companny name in query 
+
+
+
+@app.route('/get_sentiments', methods=["POST"])
 def get_sentiments():
-    sentiments = db.sentiments.find()
+
+    json_data = request.get_json()
+    
+
+    sentiments = db.sentiments.find({"search": ""})
     output = []
 
     for sentiment in sentiments:
         output.append({
+            # "datetime" : now()
             "search" : sentiment['search'],
             'sentiment_score' : sentiment['sentiment_score'],
             'emotion' : sentiment['emotion'],
@@ -75,3 +102,8 @@ def test_sentiments_service():
 
 if __name__=='__main__':
     app.run(host="0.0.0.0", port=5001)
+
+
+
+
+

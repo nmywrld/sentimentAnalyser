@@ -10,6 +10,11 @@ app = Flask(__name__)
 model_loader = ModelLoader()
 
 
+@app.route('/')
+def home():
+    return 'welcome to sentiment service'
+
+
 @app.route('/analyse', methods=['POST'])
 def convert_json_to_csv():
     json_data = request.get_json()
@@ -75,4 +80,4 @@ def get_keywords():
     return 'Hello from endpoint2'
 
 if __name__ == '__main__':
-    app.run(port=5002, debug=True)
+    app.run(port=5002, debug=True, host="0.0.0.0")

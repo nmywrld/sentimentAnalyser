@@ -1,6 +1,7 @@
 torch
 tqdm
 transformers
+# xformers
 numpy
 pandas
 emoji==0.6.0

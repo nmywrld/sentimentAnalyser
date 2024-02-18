@@ -10,10 +10,12 @@ services:
       - sentiment_network
     environment:
       - SENTIMENT_SERVICE_URL=http://service:5002/
+      - DB_URL=http://sentiment_db:27017/
 
   service:
     build: ./sentiment_service
     command: python -u sentimentApp.py
+    hostname: service
     ports:
       - "5002:5002"
     networks:
@@ -32,6 +34,9 @@ services:
 
     volumes:
       - sentiment_db:/data/db
+
+    networks:
+      - sentiment_network
 
 volumes:
   sentiment_db:
