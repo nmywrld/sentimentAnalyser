@@ -99,7 +99,17 @@ class ModelLoader:
 
                 pbar.update(1)
         
-        return headlines_df
+        # sum up the sentiment scores for the headlines and descriptions and store in a variable
+        headlines_score = headlines_df['headline_sentiment'].sum()
+        description_score = headlines_df['description_sentiment'].sum()
+
+
+        return {
+            "headlines_score": headlines_score,
+            "description_score": description_score,
+            "emotions": self.emotions
+        }
+    
 
     def get_keywords(self, batch_headlines):
         return self.extract_keywords(batch_headlines)

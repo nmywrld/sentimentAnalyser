@@ -15,7 +15,7 @@ def home():
     return 'welcome to sentiment service'
 
 
-@app.route('/analyse', methods=['POST'])
+@app.route('/analyse_headlines', methods=['POST'])
 def convert_json_to_csv():
     json_data = request.get_json()
 
