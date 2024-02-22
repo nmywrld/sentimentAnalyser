@@ -78,7 +78,7 @@ def ping_server():
 @app.route('/get_sentiments', methods=["POST"])
 def get_sentiments():
 
-    json_data = request.get_json()
+    # json_data = request.get_json()
     
 
     sentiments = db.sentiments.find({"search": ""})

@@ -12,6 +12,9 @@ services:
       - SENTIMENT_SERVICE_URL=http://service:5002/
       - DB_URL=http://sentiment_db:27017/
 
+    depends_on:
+      - service: service_healthy
+
   service:
     build: ./sentiment_service
     command: python -u sentimentApp.py
@@ -20,6 +23,11 @@ services:
       - "5002:5002"
     networks:
       - sentiment_network
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://localhost:5002/healthcheck || exit 1"]
+      interval: 1m30s
+      start_period: 30s
 
   db:
     image: mongo:latest
