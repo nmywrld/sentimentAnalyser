@@ -17,6 +17,7 @@ def home():
 
 @app.route('/analyse_headlines', methods=['POST'])
 def convert_json_to_csv():
+    # Get JSON from request
     json_data = request.get_json()
 
     # Convert JSON to DataFrame
@@ -34,7 +35,7 @@ def convert_json_to_csv():
     keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline_text'].tolist()) + " ".join(headlines_df['description'].tolist()))
 
 
-    # return headlines_df
+    return jsonify({results, keyword_results})
 
 # /test endpoint that reads ./testing/testData.csv and does the same as /analyse
 @app.route('/test')

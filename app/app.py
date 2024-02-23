@@ -70,8 +70,8 @@ def query_sentiments(search_term):
     output = []
 
     if sentiments is None:
-        # call /scraper endpoint and wait for reply
-        # call /add_sentiments endpoint with scraper results in request and wait for reply
+        # call /scraper endpoint and wait for reply (returns json with headlines and descriptions)
+        # call /add_sentiments endpoint with scraper results in request and wait for reply (returns json with sentiment results)
 
         return None
     else:
@@ -104,7 +104,12 @@ def query_sentiments(search_term):
 @app.route('/add_sentiments')
 def add_sentiments():
     # call sentiment_service_url/analyse_headlines
-    response = requests.get(sentiment_service_url + "/analyse_headlines")
+    json_data = request.get_json()
+
+
+    # add json data to the request
+    response = requests.post(sentiment_service_url + "/analyse_headlines", data=json_data)
+
 
     # get the results from the response
     results = response.json()
