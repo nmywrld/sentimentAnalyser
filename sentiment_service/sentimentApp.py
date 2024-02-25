@@ -21,10 +21,9 @@ def convert_json_to_csv():
     json_data = request.get_json()
 
     # Convert JSON to DataFrame
-    df = pd.DataFrame(json_data)
+    headlines_df = pd.DataFrame(json_data)
 
-
-    headlines_df = df.copy()
+    # headlines_df = df.copy()
     headlines_df['headline_sentiment'] = 0
     headlines_df['description_sentiment'] = 0
     headlines_df['emotion'] = 0
@@ -35,7 +34,7 @@ def convert_json_to_csv():
     keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline_text'].tolist()) + " ".join(headlines_df['description'].tolist()))
 
 
-    return jsonify({results, keyword_results})
+    return jsonify({"results": results, "keyword_results":keyword_results})
 
 # /test endpoint that reads ./testing/testData.csv and does the same as /analyse
 @app.route('/test')
