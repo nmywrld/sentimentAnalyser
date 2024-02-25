@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+# from flask import Flask, jsonify, request
+from quart import Quart, request, jsonify
 import pymongo
 from pymongo import MongoClient
 
@@ -7,7 +8,9 @@ import os
 import requests
 from datetime import datetime
 
-app = Flask(__name__)
+import asyncio
+
+app = Quart(__name__)
 db = None
 
 # get env variable and place it in url
@@ -44,6 +47,7 @@ try:
     print("created collection")
 
     db.sentiments.insert_one({
+        "datetime": datetime.now(),
         "search" : "test",
         'sentiment_score' : 'test',
         'emotion' : 'test',
@@ -65,7 +69,7 @@ def ping_server():
         # if valid, return stored results
 
 @app.route('/query')
-def query_sentiments():
+async def query_sentiments():
     search_term = request.args.get('search_term')
 
     sentiments = db.sentiments.find({"search": search_term})
@@ -82,16 +86,20 @@ def query_sentiments():
                     'emotion' : sentiment['emotion'],
                     'keyword' : sentiment['keyword']
                 })
-
-            else:
-                break
-
+        
+        if len(output) > 0:
             return jsonify({'result' : output})
 
-    json_data = scraper(search_term)
+    print("getting data")
+    # retrieve data from 
+    response = await scraper(search_term)
+    json_data = await response.json()
+    print(json_data)
         
-    results = add_sentiments(json_data)
+    print("analysing")
+    results = await add_sentiments(json_data)
 
+    print("inserting")
     # add the results to the database
     db.sentiments.insert_one({
         "datetime" : datetime.now(),
@@ -110,14 +118,14 @@ def query_sentiments():
     # send request to sentiment service with companny name in query 
                 
 # @app.route('/scraper')
-def scraper(search_term):
+async def scraper(search_term):
     # call scraper service
     # response = requests.get(scraper_service_url + "/scrape")
     # return response.text
 
     # for now, return testData.csv in json format
     # read the csv file and return the data as dict
-    return {
+    return jsonify([
         {
             "datetime" : "2024-01-28T04:50:27Z",
             "headline" : "Elon Musk joins Trump Republicans to slam rumored Senate border deal",
@@ -143,12 +151,12 @@ def scraper(search_term):
             "headline": "ARGHH FUCK THIS",
             "description" : "test"
         }
-    }
+    ])
 
 
 
 # @app.route('/add_sentiments', methods=["POST"])
-def add_sentiments(json_data):
+async def add_sentiments(json_data):
     # call sentiment_service_url/analyse_headlines
     # json_data = request.get_json()
 

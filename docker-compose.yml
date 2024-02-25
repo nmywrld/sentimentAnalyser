@@ -3,7 +3,8 @@ version: '2'
 services:
   app:
     build: ./app
-    command: ./healthcheck.sh
+    # command: ./healthcheck.sh
+    command: python -u app.py
     ports:
       - "5001:5001"
     networks:

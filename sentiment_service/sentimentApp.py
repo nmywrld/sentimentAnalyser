@@ -19,6 +19,10 @@ def home():
 def convert_json_to_csv():
     # Get JSON from request
     json_data = request.get_json()
+    
+    print("Data received from request")
+    print()
+    print(json_data)
 
     # Convert JSON to DataFrame
     headlines_df = pd.DataFrame(json_data)
