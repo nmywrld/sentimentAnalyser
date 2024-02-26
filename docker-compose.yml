@@ -1,10 +1,25 @@
 version: '2'
 
 services:
+  # app:
+  #   build: ./app
+  #   # command: ./healthcheck.sh
+  #   command: python -u app.py
+  #   ports:
+  #     - "5001:5001"
+  #   networks:
+  #     - sentiment_network
+  #   environment:
+  #     - SENTIMENT_SERVICE_URL=http://service:5002/
+  #     - DB_URL=http://sentiment_db:27017/
+
+  #   depends_on:
+  #     - service
   app:
-    build: ./app
-    # command: ./healthcheck.sh
-    command: python -u app.py
+    build: 
+      context: ./sentiment_express
+      dockerfile: Dockerfile
+    command: npm start
     ports:
       - "5001:5001"
     networks:
@@ -12,7 +27,6 @@ services:
     environment:
       - SENTIMENT_SERVICE_URL=http://service:5002/
       - DB_URL=http://sentiment_db:27017/
-
     depends_on:
       - service
 
