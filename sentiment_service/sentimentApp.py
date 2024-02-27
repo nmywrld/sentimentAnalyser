@@ -34,11 +34,12 @@ def convert_json_to_csv():
 
     # call get_sentiment_and_emotion
     results = model_loader.get_sentiment_and_emotion(len(headlines_df), headlines_df)
+    print(results)
 
-    keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline_text'].tolist()) + " ".join(headlines_df['description'].tolist()))
+    keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline'].tolist()) + " ".join(headlines_df['description'].tolist()))
+    print(keyword_results)
 
-
-    return jsonify({"results": results, "keyword_results":keyword_results})
+    return {"results": results, "keyword_results":keyword_results}
 
 # /test endpoint that reads ./testing/testData.csv and does the same as /analyse
 @app.route('/test')
@@ -61,7 +62,7 @@ def test():
 
     # call get_sentiment_and_emotion
     results = model_loader.get_sentiment_and_emotion(len(headlines_df), headlines_df)
-    results.head()
+    print(results)
 
     keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline_text'].tolist()) + " ".join(headlines_df['description'].tolist()))
     print(keyword_results)

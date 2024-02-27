@@ -60,7 +60,7 @@ class ModelLoader:
         with tqdm(total=total_headlines, desc="Analysing Sentiments", unit="headline", dynamic_ncols=True) as pbar:
             for idx in range(total_headlines):
                 row = headlines_df.iloc[idx]
-                headline = row['headline_text']
+                headline = row['headline']
                 description = row['description']
 
 

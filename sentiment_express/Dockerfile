@@ -1,10 +1,11 @@
 # ---- Base Node ----
-FROM alpine:3.10 AS base
+FROM node:alpine AS base
 # install node
 RUN apk add --no-cache nodejs npm
 
 WORKDIR /app
 COPY package*.json ./
+COPY db_client.js ./
 
 # ---- Dependencies ----
 FROM base AS dependencies

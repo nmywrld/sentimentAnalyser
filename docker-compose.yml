@@ -26,7 +26,7 @@ services:
       - sentiment_network
     environment:
       - SENTIMENT_SERVICE_URL=http://service:5002/
-      - DB_URL=http://sentiment_db:27017/
+      - DB_URL=sentiment_db:27017
     depends_on:
       - service
 
@@ -38,6 +38,8 @@ services:
       - "5002:5002"
     networks:
       - sentiment_network
+    # volumes:
+    #   - pycache:/app/__pycache__
 
     # healthcheck:
     #   test: ["CMD-SHELL", "curl --silent --fail http://localhost:5002/healthcheck || exit 1"]
@@ -63,6 +65,7 @@ services:
 
 volumes:
   sentiment_db:
+  # pycache:
 
 networks:
   sentiment_network:
