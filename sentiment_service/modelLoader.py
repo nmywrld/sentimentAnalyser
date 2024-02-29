@@ -105,8 +105,8 @@ class ModelLoader:
 
 
         return {
-            "headlines_score": headlines_score,
-            "description_score": description_score,
+            "headlines_score": int(headlines_score),
+            "description_score": int(description_score),
             "emotions": self.emotions
         }
     

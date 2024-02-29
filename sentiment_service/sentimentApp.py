@@ -39,7 +39,8 @@ def convert_json_to_csv():
     keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline'].tolist()) + " ".join(headlines_df['description'].tolist()))
     print(keyword_results)
 
-    return {"results": results, "keyword_results":keyword_results}
+    # return {"results": results, "keyword_results":keyword_results}
+    return results
 
 # /test endpoint that reads ./testing/testData.csv and does the same as /analyse
 @app.route('/test')
