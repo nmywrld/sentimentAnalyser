@@ -113,6 +113,24 @@ class ModelLoader:
 
     def get_keywords(self, batch_headlines):
         return self.extract_keywords(batch_headlines)
+    
+    def get_comment(self, comment):
+        result = self.sentiment_model(comment)
+        label = result[0]['label']
+        emotion = None
+
+        result = self.emotion_model(comment)
+
+        label = result['label']
+        if label in self.valid_emotions:
+            emotion = label
+
+
+        return {
+            "sentiment": label,
+            "score": 1 if label == "POSITIVE" else -1,
+            "emotion": emotion if emotion else "others"
+        }
 
 
 

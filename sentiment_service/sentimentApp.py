@@ -61,6 +61,21 @@ def analyse_keywords():
 
     return keyword_results
 
+@app.route('/analyse_comment', methods=['POST'])
+def analyse_comment():
+    # get comment from request
+    comment = request.get_json()
+    print(comment)
+
+    # call get_sentiment_and_emotion
+    result = model_loader.get_comment(1, comment)
+
+    return result
+
+
+
+
+
 # /test endpoint that reads ./testing/testData.csv and does the same as /analyse
 @app.route('/test')
 def test():

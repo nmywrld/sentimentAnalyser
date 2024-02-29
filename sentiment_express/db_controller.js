@@ -1,6 +1,6 @@
 import express from "express";
 
-import Sentiment from './db_model.js';
+import {Sentiment, Comment} from './db_model.js';
 
 import db_methods from "./db_methods.js";
 
@@ -23,7 +23,23 @@ try {
 
     newSentiment.save();
 
+    // drop collection
+    Comment.collection.drop();
+    Comment.createCollection();
+
+    // insert test document
+    let newComment = new Comment({
+        search: "test",
+        sentiment_score: 0,
+        emotion: "test"
+    });
+
+    newComment.save();
+
+    console.log("DB initialised");
+
 } catch (error) {
+    console.log("DB initialisation failed");
     console.log(error);
 }
 
@@ -36,6 +52,8 @@ SentimentController.get("/query", async (req, res) => {
     console.log(search_term);
 
     const sentiments = await Sentiment.find({search: search_term});
+    const comments = await Comment.find({search: search_term});         // TO USE: combine comments and news sentiments and return 
+
     const output = [];
 
     if (sentiments) {
@@ -87,6 +105,30 @@ SentimentController.get("/query", async (req, res) => {
 
 
 
+
+});
+
+SentimentController.post("/comment", async (req, res) => {
+    const comment = req.body.comment;
+    const search_term = req.body.search_term;
+
+    try {
+        const results = await db_methods.analyse_comment(comment);
+        console.log(results);
+
+        const newComment = new Comment({
+            search: search_term,
+            sentiment_score: results.score,
+            emotion: results.emotions
+        });
+
+        await newComment.save();
+
+        return res.json({ result: newComment });
+
+    } catch (error) {
+        
+    }
 
 });
 

@@ -28,5 +28,22 @@ const sentimentSchema = new mongoose.Schema({
     }
 });
 
-// export
-export default mongoose.model("Sentiment", sentimentSchema);
+const commentSchema = new mongoose.Schema({
+    search: {
+        type: String,
+        required: true
+    },
+    sentiment_score: {
+        type: Number,
+        required: true
+    },
+    emotion: {
+        type: Object,
+        required: true
+    }
+});
+
+// export both schemas
+export const Sentiment = mongoose.model("Sentiment", sentimentSchema);
+export const Comment = mongoose.model("Comment", commentSchema);
+// export default mongoose.model("Sentiment", sentimentSchema);
