@@ -39,8 +39,27 @@ def convert_json_to_csv():
     keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline'].tolist()) + " ".join(headlines_df['description'].tolist()))
     print(keyword_results)
 
-    # return {"results": results, "keyword_results":keyword_results}
-    return results
+    return {"results": results, "keyword_results":keyword_results}
+    # return {"results": jsonify(results), "keyword_results":jsonify(keyword_results)}
+    # return keyword_results
+
+@app.route('/analyse_keywords', methods=['POST'])
+def analyse_keywords():
+    # Get JSON from request
+    json_data = request.get_json()
+    
+    print("Data received from request")
+    print()
+    print(json_data)
+
+    # Convert JSON to DataFrame
+    headlines_df = pd.DataFrame(json_data)
+
+    # call get_sentiment_and_emotion
+    keyword_results = model_loader.get_keywords(" ".join(headlines_df['headline'].tolist()) + " ".join(headlines_df['description'].tolist()))
+    print(keyword_results)
+
+    return keyword_results
 
 # /test endpoint that reads ./testing/testData.csv and does the same as /analyse
 @app.route('/test')

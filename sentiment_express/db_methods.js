@@ -6,15 +6,43 @@ const db_methods = {
 
     add_sentiments: async (json_data) => {
 
-        // axios post call to sentiment_service_url + "/analyse_headlines", data=json_data
-        // return response
+        // await axios.post(db_methods.sentiment_service_url + "/analyse_headlines", json_data)
+        // .then(response => {
+        //     console.log("sentiment_service_url is valid");
+        //     console.log(response.data);
+        
+        //     return new Promise((resolve, reject) => {
+        //         resolve(response.data);
+        //     })
+        // })
 
-        const response = await axios.post(db_methods.sentiment_service_url + "/analyse_headlines", json_data)
-        .then(response => {
-            console.log("sentiment_service_url is valid");
-            return response;
+        return new Promise((resolve, reject) => {
+            // let sentiment_results = null;
+            // let keyword_results = null;
+
+            try {
+                axios.post(db_methods.sentiment_service_url + "/analyse_headlines", json_data)
+                .then(response => {
+                    console.log("analyse headlines is valid");
+                    console.log(response.data);
+                    
+                    resolve(response.data);
+                    // sentiment_results = response.data;
+                    // resolve(sentiment_results)
+                })
+                .catch(error => {
+                    console.log("analyse headlines failed");
+                    reject(error);
+                });
+
+                // axios.post(db_methods.sentiment_service_url + "/analyse_keywords", json_data)
+
+                
+            } catch (error) {
+                console.log("method failed");
+                reject(error);
+            }
         })
-
 
 
     },

@@ -28,6 +28,7 @@ services:
       - SENTIMENT_SERVICE_URL=http://service:5002/
       - DB_URL=sentiment_db:27017
     depends_on:
+      - db
       - service
 
   service:

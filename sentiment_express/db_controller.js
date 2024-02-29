@@ -33,6 +33,7 @@ SentimentController.get("/", (req, res) => {
 
 SentimentController.get("/query", async (req, res) => {
     const search_term = req.query.search_term;
+    console.log(search_term);
 
     const sentiments = await Sentiment.find({search: search_term});
     const output = [];
@@ -45,7 +46,8 @@ SentimentController.get("/query", async (req, res) => {
         }
 
         if (output.length > 0) {
-            return res.json({result: output});
+            console.log("In DB. Returning data...");
+            return res.json({data_source:"DB", result: output});
         }
     }
 
@@ -58,20 +60,31 @@ SentimentController.get("/query", async (req, res) => {
 
     console.log("Analysing...");
 
-    const results = await db_methods.add_sentiments(response);
+    try {
+        // Wait for the promise to resolve and store the result in the variable 'results'
+        const results = await db_methods.add_sentiments(response);
+        console.log(results);
+    
+        console.log("Inserting...");
+    
+        const newSentiment = new Sentiment({
+            datetime: Date.now(),
+            search: search_term,
+            // Access the properties of the resolved value 'results' and calculate sentiment_score
+            sentiment_score: results.results.headlines_score + results.results.description_score,
+            emotion: results.results.emotions,
+            keyword: results.keyword_results
+        });
+    
+        await newSentiment.save();
+    
+        return res.json({ result: newSentiment });
+    } catch (error) {
+        // Handle any errors that occur during promise resolution
+        console.error("Error:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 
-    console.log("Inserting...");
-    const newSentiment = new Sentiment({
-        datetime: Date.now(),
-        search: "test",
-        sentiment_score: results.results.headlines_score + results.results.description_score,
-        emotion: results.results.emotions,
-        keyword: results.keyword_results
-    });
-
-    await newSentiment.save();
-
-    return res.json({result: newSentiment});
 
 
 
