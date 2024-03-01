@@ -38,7 +38,7 @@ const commentSchema = new mongoose.Schema({
         required: true
     },
     emotion: {
-        type: Object,
+        type: String,
         required: true
     }
 });

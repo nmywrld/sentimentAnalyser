@@ -68,7 +68,8 @@ def analyse_comment():
     print(comment)
 
     # call get_sentiment_and_emotion
-    result = model_loader.get_comment(1, comment)
+    result = model_loader.get_comment(comment["comment"])
+    print(result)
 
     return result
 

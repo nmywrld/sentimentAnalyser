@@ -41,9 +41,12 @@ const db_methods = {
 
         return new Promise((resolve, reject) => {
             try {
-                axios.post(db_methods.sentiment_service_url + "/analyse_comment", comment)
+                // console.log(comment);
+                axios.post(db_methods.sentiment_service_url + "/analyse_comment", {"comment":comment})
                 .then(response => {
                     console.log("analyse comment is valid");
+
+                    console.log("method");
                     console.log(response.data);
                     
                     resolve(response.data);

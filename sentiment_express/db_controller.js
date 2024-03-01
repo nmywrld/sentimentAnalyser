@@ -9,6 +9,7 @@ const SentimentController = express.Router();
 
 try {
     // // drop collection
+    console.log("dropping sentiment");
     Sentiment.collection.drop();
     Sentiment.createCollection();
 
@@ -21,8 +22,10 @@ try {
         keyword: {"test": 0}
     });
 
-    newSentiment.save();
+    console.log("saving sentiment test");
+    await newSentiment.save();
 
+    console.log("dropping comment");
     // drop collection
     Comment.collection.drop();
     Comment.createCollection();
@@ -34,7 +37,8 @@ try {
         emotion: "test"
     });
 
-    newComment.save();
+    console.log("saving comment test");
+    await newComment.save();
 
     console.log("DB initialised");
 
@@ -112,16 +116,25 @@ SentimentController.post("/comment", async (req, res) => {
     const comment = req.body.comment;
     const search_term = req.body.search_term;
 
+    console.log(comment);
+    console.log(search_term);
+
     try {
         const results = await db_methods.analyse_comment(comment);
-        console.log(results);
 
-        const newComment = new Comment({
+        console.log("controller");
+        console.log(results, typeof results);
+        console.log(results.score, results.emotion, search_term);
+
+
+        console.log("Inserting...");
+        let newComment = new Comment({
             search: search_term,
             sentiment_score: results.score,
-            emotion: results.emotions
+            emotion: results.emotion
         });
 
+        console.log("saving...");
         await newComment.save();
 
         return res.json({ result: newComment });
